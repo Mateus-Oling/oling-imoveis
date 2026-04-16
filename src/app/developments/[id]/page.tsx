@@ -1,0 +1,113 @@
+import { developments } from "@/data/developments"
+import Image from "next/image"
+
+export default async function PropertyDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const development = developments.find((item) => item.id === Number(id))
+
+  console.log(id)
+  console.log(developments)
+
+  return (
+    <main className="max-w-7xl mx-auto px-4 py-6 relative space-y-10">
+      {/* GALERIA */}
+      <section className="grid grid-cols-4 gap-4">
+        <div className="col-span-3 relative h-[400px] rounded-xl overflow-hidden">
+          <Image src={development.image} alt="" fill className="object-cover" />
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="relative h-[120px] rounded-lg overflow-hidden">
+            <Image
+              src={development.image}
+              alt=""
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="relative h-[120px] rounded-lg overflow-hidden">
+            <Image
+              src={development.image}
+              alt=""
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="relative h-[120px] rounded-lg overflow-hidden">
+            <Image
+              src={development.image}
+              alt=""
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* HEADER + INFO */}
+      <section className="mt-6 max-w-4xl space-y-6">
+        <div>
+          <h1 className="text-3xl font-semibold">
+            {development.type} em {development.neighborhood}
+          </h1>
+          <p className="text-gray-500 mt-1">{development.address}</p>
+        </div>
+
+        <div className="flex items-center gap-8">
+          <span>{development.area} m²</span>
+        </div>
+      </section>
+
+      {/* FORM (ABSOLUTO) */}
+      <div className="absolute top-[440px] right-4 w-[350px] bg-white shadow-md rounded-xl p-6 space-y-4">
+        <h3 className="text-lg font-semibold">Entrar em contato</h3>
+
+        <input
+          className="w-full border rounded-md px-3 py-2"
+          placeholder="Nome"
+        />
+        <input
+          className="w-full border rounded-md px-3 py-2"
+          placeholder="E-mail"
+        />
+
+        <textarea
+          className="w-full border rounded-md px-3 py-2 h-24"
+          placeholder="Mensagem"
+        />
+
+        <button className="w-full bg-green-700 text-white py-2 rounded-md">
+          Enviar
+        </button>
+      </div>
+
+      {/* DESCRIÇÃO */}
+      <section className="max-w-4xl mt-10">
+        <h2 className="text-2xl font-semibold mb-3">Descrição</h2>
+        <p className="text-gray-600 leading-relaxed">
+          Elegância aliada ao conforto perfeito...
+        </p>
+      </section>
+
+      {/* CARACTERÍSTICAS */}
+      <section className="max-w-4xl mt-10">
+        <h2 className="text-2xl font-semibold mb-5">
+          Características e acabamentos
+        </h2>
+
+        <ul className="grid grid-cols-2 gap-3 text-sm text-gray-600">
+          <li>✔ Garagem coberta</li>
+          <li>✔ Energia solar</li>
+          <li>✔ Piscina</li>
+          <li>✔ Portão eletrônico</li>
+          <li>✔ Jardim</li>
+          <li>✔ Piso porcelanato</li>
+        </ul>
+      </section>
+    </main>
+  )
+}
