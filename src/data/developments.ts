@@ -17,4 +17,22 @@ export const developments = [
     address: "Rua dos Glorianos, 254",
     area: 300,
   },
+  {
+    id: 225,
+    image: "/capa05.png",
+    type: "Apartamento",
+    title: "Torres",
+    neighborhood: "bairro Nova Esperança",
+    address: "Rua da Esperança, 341",
+    area: 250,
+  },
+  {
+    id: 226,
+    image: "/capa05.png",
+    type: "Apartamento",
+    title: "Torres",
+    neighborhood: "bairro Nova Esperança",
+    address: "Rua da Esperança, 341",
+    area: 250,
+  },
 ]

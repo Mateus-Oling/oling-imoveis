@@ -26,7 +26,7 @@ export default function PropertyCard({
   price,
 }: PropertyCardProps) {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+    <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition ">
       <img src={image} alt="Imóvel" />
 
       <div className="p-4">

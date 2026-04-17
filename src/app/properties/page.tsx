@@ -17,13 +17,13 @@ export default function PropertiesPage() {
   })
   return (
     <main>
-      <section className="py-16 bg-gray-50">
+      <section className="py-18 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Imóveis à venda</h1>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 py-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {filteredProperties.map((property, index) => (
               <PropertyCard key={index} {...property} />
             ))}

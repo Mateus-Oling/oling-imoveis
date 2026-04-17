@@ -5,6 +5,7 @@ import PropertyCard from "@/components/property/PropertyCard"
 import FeaturedDevelopments from "@/components/home/FeaturedDevelopments"
 import Link from "next/link"
 import { properties } from "@/data/properties"
+import Image from "next/image"
 
 export default function Home() {
   const [searchProperty, setSearchProperty] = useState("")
@@ -19,9 +20,10 @@ export default function Home() {
   return (
     <main className="bg-gray-50">
       <section className="relative h-[60vh] min-h-[400px]">
-        <img
+        <Image
           src="/hero.jpg"
           alt="Cidade"
+          fill
           className="absolute inset-0 w-full h-full object-cover"
         />
 
@@ -60,7 +62,7 @@ export default function Home() {
           </Link>
         </div>
         <div className="max-w-7xl mx-auto px-4 py-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {filteredProperties.map((property, index) => (
               <PropertyCard key={index} {...property} />
             ))}

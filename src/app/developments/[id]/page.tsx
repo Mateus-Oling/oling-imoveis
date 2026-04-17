@@ -9,12 +9,8 @@ export default async function PropertyDetailsPage({
   const { id } = await params
   const development = developments.find((item) => item.id === Number(id))
 
-  console.log(id)
-  console.log(developments)
-
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 relative space-y-10">
-      {/* GALERIA */}
       <section className="grid grid-cols-4 gap-4">
         <div className="col-span-3 relative h-[400px] rounded-xl overflow-hidden">
           <Image src={development.image} alt="" fill className="object-cover" />
@@ -24,7 +20,7 @@ export default async function PropertyDetailsPage({
           <div className="relative h-[120px] rounded-lg overflow-hidden">
             <Image
               src={development.image}
-              alt=""
+              alt="Imagem do empreendimento"
               fill
               className="object-cover"
             />
@@ -32,7 +28,7 @@ export default async function PropertyDetailsPage({
           <div className="relative h-[120px] rounded-lg overflow-hidden">
             <Image
               src={development.image}
-              alt=""
+              alt="Imagem do empreendimento"
               fill
               className="object-cover"
             />
@@ -40,7 +36,7 @@ export default async function PropertyDetailsPage({
           <div className="relative h-[120px] rounded-lg overflow-hidden">
             <Image
               src={development.image}
-              alt=""
+              alt="Imagem do empreendimento"
               fill
               className="object-cover"
             />
@@ -48,7 +44,6 @@ export default async function PropertyDetailsPage({
         </div>
       </section>
 
-      {/* HEADER + INFO */}
       <section className="mt-6 max-w-4xl space-y-6">
         <div>
           <h1 className="text-3xl font-semibold">
@@ -62,7 +57,6 @@ export default async function PropertyDetailsPage({
         </div>
       </section>
 
-      {/* FORM (ABSOLUTO) */}
       <div className="absolute top-[440px] right-4 w-[350px] bg-white shadow-md rounded-xl p-6 space-y-4">
         <h3 className="text-lg font-semibold">Entrar em contato</h3>
 
@@ -85,7 +79,6 @@ export default async function PropertyDetailsPage({
         </button>
       </div>
 
-      {/* DESCRIÇÃO */}
       <section className="max-w-4xl mt-10">
         <h2 className="text-2xl font-semibold mb-3">Descrição</h2>
         <p className="text-gray-600 leading-relaxed">
@@ -93,7 +86,6 @@ export default async function PropertyDetailsPage({
         </p>
       </section>
 
-      {/* CARACTERÍSTICAS */}
       <section className="max-w-4xl mt-10">
         <h2 className="text-2xl font-semibold mb-5">
           Características e acabamentos

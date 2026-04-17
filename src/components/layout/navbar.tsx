@@ -19,7 +19,7 @@ export default function Navbar() {
             Imóveis
           </Link>
           <Link
-            href="/empreendimentos"
+            href="/developments"
             className="hover:text-green-600 transition-colors"
           >
             Empreendimentos
