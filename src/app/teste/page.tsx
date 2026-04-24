@@ -1,3 +1,4 @@
+import FeatureSelector from "@/components/FeatureSelector"
 import { supabase } from "@/lib/supabase"
 
 export default async function Teste() {
@@ -6,10 +7,5 @@ export default async function Teste() {
   console.log("DATA:", data)
   console.log("ERROR:", error)
 
-  return (
-    <div className="p-10">
-      <h1>Teste Supabase</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
-  )
+  return <FeatureSelector></FeatureSelector>
 }
