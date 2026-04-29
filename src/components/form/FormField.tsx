@@ -1,24 +1,23 @@
 import React from "react"
+import { FieldError, UseFormRegister } from "react-hook-form"
 
-import { FieldError, UseFormRegister, FieldValues, Path } from "react-hook-form"
-
-type Props<T extends FieldValues> = {
+type Props = {
   label: string
-  name: Path<T>
-  register: UseFormRegister<T>
+  name: string
+  register: UseFormRegister<unknown>
   error?: FieldError
   placeholder?: string
   type?: string
 }
 
-export default function FormField<T extends FieldValues>({
+export default function FormField({
   label,
   name,
   register,
   error,
   placeholder,
   type = "text",
-}: Props<T>) {
+}: Props) {
   return (
     <div>
       <label className="block text-sm font-medium mb-1">{label}</label>

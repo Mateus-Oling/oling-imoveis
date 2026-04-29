@@ -142,11 +142,7 @@ export default function NewPropertyPage() {
               <option value="novo">Novo</option>
             </select>
             {errors.condition && (
-              <p
-                className={`w-full border rounded-md px-3 py-2 text-sm ${
-                  errors.type ? "border-red-500" : "border-gray-300"
-                }`}
-              >
+              <p className="text-red-500 text-sm mt-1">
                 {errors.condition.message}
               </p>
             )}
