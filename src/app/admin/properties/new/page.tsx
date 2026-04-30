@@ -7,6 +7,7 @@ import { propertySchema } from "@/schemas/propertySchema"
 import { z } from "zod"
 import FormField from "@/components/form/FormField"
 import { supabase } from "@/lib/supabase"
+import FeatureSelector from "@/components/FeatureSelector"
 
 type FormData = z.infer<typeof propertySchema>
 
@@ -18,6 +19,7 @@ export default function NewPropertyPage() {
     type: null,
     message: "",
   })
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
 
   const {
     register,
@@ -323,6 +325,11 @@ export default function NewPropertyPage() {
           </p>
         )}
       </form>
+
+      <FeatureSelector
+        selectedFeatures={selectedFeatures}
+        setSelectedFeatures={setSelectedFeatures}
+      />
     </main>
   )
 }
