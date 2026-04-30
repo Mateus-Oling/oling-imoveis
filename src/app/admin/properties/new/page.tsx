@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { propertySchema } from "@/schemas/propertySchema"
 import { z } from "zod"
 import FormField from "@/components/form/FormField"
+import { supabase } from "@/lib/supabase"
 
 type FormData = z.infer<typeof propertySchema>
 
@@ -21,6 +22,7 @@ export default function NewPropertyPage() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(propertySchema),
@@ -31,13 +33,21 @@ export default function NewPropertyPage() {
     try {
       setFeedback({ type: null, message: "" })
 
-      await new Promise((res) => setTimeout(res, 1000))
-      console.log(data)
+      const { error } = await supabase.from("properties").insert(data)
+
+      if (error) {
+        throw error
+      }
+
       setFeedback({
         type: "success",
         message: "Imóvel cadastrado com sucesso!",
       })
+      reset()
+      window.scrollTo({ top: 0, behavior: "smooth" })
     } catch (err) {
+      console.error(err)
+
       setFeedback({
         type: "error",
         message: "Erro ao salvar imóvel.",
@@ -54,7 +64,7 @@ export default function NewPropertyPage() {
           <h3 className="font-semibold text-lg">Informações Básicas</h3>
 
           <FormField
-            label="Título do imóvel *"
+            label="Título do imóvel"
             name="title"
             register={register}
             error={errors.title}
@@ -80,7 +90,7 @@ export default function NewPropertyPage() {
           </div>
 
           <FormField
-            label="Endereço *"
+            label="Endereço"
             name="address"
             register={register}
             error={errors.address}
@@ -104,7 +114,7 @@ export default function NewPropertyPage() {
           />
 
           <FormField
-            label="Bairro *"
+            label="Bairro"
             name="neighborhood"
             register={register}
             error={errors.neighborhood}
@@ -112,7 +122,7 @@ export default function NewPropertyPage() {
           />
 
           <FormField
-            label="Cidade *"
+            label="Cidade"
             name="city"
             register={register}
             error={errors.city}
@@ -120,7 +130,7 @@ export default function NewPropertyPage() {
           />
 
           <FormField
-            label="CEP *"
+            label="CEP"
             name="zip_code"
             register={register}
             error={errors.zip_code}
@@ -128,7 +138,7 @@ export default function NewPropertyPage() {
           />
 
           <div>
-            <label>Condição do imóvel *</label>
+            <label>Condição do imóvel</label>
             <select
               {...register("condition")}
               className={`w-full border rounded-md px-3 py-2 text-sm ${
@@ -153,7 +163,7 @@ export default function NewPropertyPage() {
           <h3 className="font-semibold text-lg">Dimensões e Valores</h3>
 
           <FormField
-            label="Área total (m²) *"
+            label="Área total (m²)"
             name="area_total"
             type="number"
             register={register}
