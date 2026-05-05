@@ -53,7 +53,6 @@ export default function FeatureSelector({
 
   return (
     <div className="mt-10">
-      {/* HEADER */}
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-gray-900">Características</h2>
         <p className="text-sm text-gray-500 mt-1">
@@ -61,19 +60,16 @@ export default function FeatureSelector({
         </p>
       </div>
 
-      {/* GRID DE CATEGORIAS */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {Object.entries(groupedFeatures).map(([category, items]) => (
           <div
             key={category}
             className="border border-gray-200 rounded-xl p-4 bg-white shadow-sm"
           >
-            {/* TÍTULO DA CATEGORIA */}
             <h3 className="text-sm font-semibold text-gray-800 mb-4 capitalize">
               {category.replace("_", " ")}
             </h3>
 
-            {/* LISTA */}
             <div className="space-y-2">
               {items.map((feature) => (
                 <label

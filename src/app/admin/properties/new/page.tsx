@@ -35,17 +35,36 @@ export default function NewPropertyPage() {
     try {
       setFeedback({ type: null, message: "" })
 
-      const { error } = await supabase.from("properties").insert(data)
+      const { data: property, error } = await supabase
+        .from("properties")
+        .insert(data)
+        .select()
+        .single()
 
       if (error) {
         throw error
+      }
+
+      const relations = selectedFeatures.map((featureId) => ({
+        property_id: property.id,
+        feature_id: featureId,
+      }))
+
+      const { error: relationError } = await supabase
+        .from("property_feature_relations")
+        .insert(relations)
+
+      if (relationError) {
+        throw relationError
       }
 
       setFeedback({
         type: "success",
         message: "Imóvel cadastrado com sucesso!",
       })
+
       reset()
+      setSelectedFeatures([])
       window.scrollTo({ top: 0, behavior: "smooth" })
     } catch (err) {
       console.error(err)
