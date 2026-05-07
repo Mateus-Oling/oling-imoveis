@@ -8,6 +8,7 @@ import { z } from "zod"
 import FormField from "@/components/form/FormField"
 import { supabase } from "@/lib/supabase"
 import FeatureSelector from "@/components/FeatureSelector"
+import ImageUploader from "@/components/ImageUploader"
 
 type FormData = z.infer<typeof propertySchema>
 
@@ -20,6 +21,7 @@ export default function NewPropertyPage() {
     message: "",
   })
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
+  const [images, setImages] = useState<File[]>([])
 
   const {
     register,
@@ -349,6 +351,7 @@ export default function NewPropertyPage() {
         selectedFeatures={selectedFeatures}
         setSelectedFeatures={setSelectedFeatures}
       />
+      <ImageUploader images={images} setImages={setImages} />
     </main>
   )
 }
