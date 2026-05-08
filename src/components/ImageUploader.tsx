@@ -1,3 +1,4 @@
+import Image from "next/image"
 import React from "react"
 import { useDropzone } from "react-dropzone"
 
@@ -7,7 +8,12 @@ type Props = {
 }
 
 export default function ImageUploader({ images, setImages }: Props) {
-  const { getRootProps, getInputProps } = useDropzone()
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles) => {
+      setImages(acceptedFiles)
+      console.log(images)
+    },
+  })
 
   return (
     <section className="mt-10 border border-gray-200 rounded-2xl p-6 bg-white">
@@ -54,6 +60,46 @@ export default function ImageUploader({ images, setImages }: Props) {
             PNG, JPG ou WEBP até 10MB
           </p>
         </div>
+      </div>
+
+      <div className="mt-14">
+        <div className="flex items-center justify-between mb-5">
+          <h3 className="text-base font-semibold text-gray-800">
+            Fotos adicionadas
+          </h3>
+
+          <span className="text-sm text-gray-500">{images.length}/20</span>
+        </div>
+
+        {images.length === 0 ? (
+          <div className="border border-gray-200 rounded-2xl bg-white py-16 px-6 flex flex-col items-center justify-center text-center">
+            <div className="text-5xl mb-5 opacity-60">🖼️</div>
+
+            <p className="text-xl font-semibold text-gray-700">
+              Nenhuma foto adicionada ainda
+            </p>
+
+            <p className="text-sm text-gray-500 mt-2">
+              As imagens que você selecionar aparecerão aqui.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className="relative aspect-square overflow-hidden rounded-xl border border-gray-200 bg-gray-100"
+              >
+                <Image
+                  src={URL.createObjectURL(image)}
+                  alt={image.name}
+                  className="w-full h-full object-cover"
+                  fill
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
