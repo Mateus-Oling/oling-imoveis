@@ -79,7 +79,7 @@ export default function NewPropertyPage() {
   }
 
   return (
-    <main className="p-10 max-w-4xl mx-auto">
+    <main className="p-10 max-w-7xl mx-auto">
       <h1 className="text-2xl font-semibold mb-6">Cadastrar Imóvel</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -345,12 +345,12 @@ export default function NewPropertyPage() {
             Corrija os campos obrigatórios antes de continuar.
           </p>
         )}
-      </form>
 
-      <FeatureSelector
-        selectedFeatures={selectedFeatures}
-        setSelectedFeatures={setSelectedFeatures}
-      />
+        <FeatureSelector
+          selectedFeatures={selectedFeatures}
+          setSelectedFeatures={setSelectedFeatures}
+        />
+      </form>
       <ImageUploader images={images} setImages={setImages} />
     </main>
   )

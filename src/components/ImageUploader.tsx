@@ -11,26 +11,27 @@ export default function ImageUploader({ images, setImages }: Props) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
       setImages(acceptedFiles)
-      console.log(images)
+      console.log(acceptedFiles)
     },
   })
 
   return (
-    <section className="mt-10 border border-gray-200 rounded-2xl p-6 bg-white">
+    <section className="relative isolate mt-10 border border-gray-200 rounded-2xl p-6 bg-white">
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-900">Fotos do Imóvel</h2>
         <p className="text-sm text-gray-500 mt-1">
           Você pode enviar até 20 fotos. A primeira será a foto de capa.
         </p>
       </div>
+      <div className="relative border-2 border-dashed border-gray-300 rounded-2xl px-6 py-14 text-center hover:border-green-500 transition ">
+        <div
+          {...getRootProps()}
+          className="absolute inset-0 z-50 cursor-pointer pointer-events-auto"
+        >
+          <input {...getInputProps()} />
+        </div>
 
-      <div
-        {...getRootProps()}
-        className="border-2 border-dashed border-gray-300 rounded-2xl px-6 py-14 text-center cursor-pointer hover:border-green-500 transition"
-      >
-        <input {...getInputProps()} />
-
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center pointer-events-none">
           <div className="text-5xl mb-6">🖼️</div>
 
           <p className="text-lg font-semibold text-gray-800 mb-4">
@@ -61,7 +62,6 @@ export default function ImageUploader({ images, setImages }: Props) {
           </p>
         </div>
       </div>
-
       <div className="mt-14">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-base font-semibold text-gray-800">
@@ -72,7 +72,7 @@ export default function ImageUploader({ images, setImages }: Props) {
         </div>
 
         {images.length === 0 ? (
-          <div className="border border-gray-200 rounded-2xl bg-white py-16 px-6 flex flex-col items-center justify-center text-center">
+          <div className="border border-gray-200 rounded-2xl bg-white py-16 px-6 flex flex-col items-center justify-center text-center pointer-events-none">
             <div className="text-5xl mb-5 opacity-60">🖼️</div>
 
             <p className="text-xl font-semibold text-gray-700">
