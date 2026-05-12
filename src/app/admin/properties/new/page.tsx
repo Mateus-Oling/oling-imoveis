@@ -22,6 +22,7 @@ export default function NewPropertyPage() {
   })
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [images, setImages] = useState<File[]>([])
+  const [coverIndex, setCoverIndex] = useState(0)
 
   const {
     register,
@@ -351,7 +352,12 @@ export default function NewPropertyPage() {
           setSelectedFeatures={setSelectedFeatures}
         />
       </form>
-      <ImageUploader images={images} setImages={setImages} />
+      <ImageUploader
+        images={images}
+        setImages={setImages}
+        coverIndex={coverIndex}
+        setCoverIndex={setCoverIndex}
+      />
     </main>
   )
 }

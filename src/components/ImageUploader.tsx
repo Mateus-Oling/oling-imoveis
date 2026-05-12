@@ -5,15 +5,31 @@ import { useDropzone } from "react-dropzone"
 type Props = {
   images: File[]
   setImages: (images: File[]) => void
+  coverIndex: number
+  setCoverIndex: (index: number) => void
 }
 
-export default function ImageUploader({ images, setImages }: Props) {
+export default function ImageUploader({
+  images,
+  setImages,
+  coverIndex,
+  setCoverIndex,
+}: Props) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
-      setImages(acceptedFiles)
-      console.log(acceptedFiles)
+      setImages((prevImages) => [...prevImages, ...acceptedFiles])
     },
   })
+
+  function removeImage(indexToRemove: number) {
+    setImages((prevImages) =>
+      prevImages.filter((_, index) => index !== indexToRemove),
+    )
+
+    if (coverIndex === indexToRemove) {
+      setCoverIndex(0)
+    }
+  }
 
   return (
     <section className="relative isolate mt-10 border border-gray-200 rounded-2xl p-6 bg-white">
@@ -62,6 +78,7 @@ export default function ImageUploader({ images, setImages }: Props) {
           </p>
         </div>
       </div>
+
       <div className="mt-14">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-base font-semibold text-gray-800">
@@ -72,7 +89,7 @@ export default function ImageUploader({ images, setImages }: Props) {
         </div>
 
         {images.length === 0 ? (
-          <div className="border border-gray-200 rounded-2xl bg-white py-16 px-6 flex flex-col items-center justify-center text-center pointer-events-none">
+          <div className="border border-gray-200 rounded-2xl bg-white py-16 px-6 flex flex-col items-center justify-center text-center">
             <div className="text-5xl mb-5 opacity-60">🖼️</div>
 
             <p className="text-xl font-semibold text-gray-700">
@@ -90,6 +107,27 @@ export default function ImageUploader({ images, setImages }: Props) {
                 key={index}
                 className="relative aspect-square overflow-hidden rounded-xl border border-gray-200 bg-gray-100"
               >
+                {coverIndex === index && (
+                  <div className="absolute top-2 left-2 z-10 bg-green-600 text-white text-xs px-2 py-1 rounded-md font-medium">
+                    Capa
+                  </div>
+                )}
+                <button
+                  type="button"
+                  className="absolute top-2 right-2 z-10 bg-black/70 text-white w-7 h-7 rounded-full text-sm hover:bg-black transition"
+                  onClick={() => removeImage(index)}
+                >
+                  X
+                </button>
+                {coverIndex !== index && (
+                  <button
+                    type="button"
+                    onClick={() => setCoverIndex(index)}
+                    className="absolute top-2 left-2 z-10 bg-white/70 text-black text-xs px-2 py-1 rounded-md font-medium hover:bg-white transition"
+                  >
+                    Definir capa
+                  </button>
+                )}
                 <Image
                   src={URL.createObjectURL(image)}
                   alt={image.name}
