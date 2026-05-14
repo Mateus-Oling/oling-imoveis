@@ -23,6 +23,7 @@ export default function NewPropertyPage() {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [images, setImages] = useState<File[]>([])
   const [coverIndex, setCoverIndex] = useState(0)
+  const [imageError, setImageError] = useState("")
 
   const {
     register,
@@ -357,6 +358,8 @@ export default function NewPropertyPage() {
         setImages={setImages}
         coverIndex={coverIndex}
         setCoverIndex={setCoverIndex}
+        imageError={imageError}
+        setImageError={setImageError}
       />
     </main>
   )

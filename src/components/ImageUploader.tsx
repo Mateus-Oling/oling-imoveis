@@ -7,6 +7,8 @@ type Props = {
   setImages: (images: File[]) => void
   coverIndex: number
   setCoverIndex: (index: number) => void
+  imageError: string
+  setImageError: (message: string) => void
 }
 
 export default function ImageUploader({
@@ -14,10 +16,28 @@ export default function ImageUploader({
   setImages,
   coverIndex,
   setCoverIndex,
+  imageError,
+  setImageError,
 }: Props) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
-      setImages((prevImages) => [...prevImages, ...acceptedFiles])
+      setImages((prevImages) => {
+        const remainingSlots = 20 - prevImages.length
+
+        const filesToAdd = acceptedFiles.slice(0, remainingSlots)
+
+        const rejectedCount = acceptedFiles.length - filesToAdd.length
+
+        if (rejectedCount > 0) {
+          setImageError(
+            `${rejectedCount} imagem(ns) não foram adicionadas porque o limite máximo é 20.`,
+          )
+        } else {
+          setImageError("")
+        }
+
+        return [...prevImages, ...filesToAdd]
+      })
     },
   })
 
@@ -114,7 +134,7 @@ export default function ImageUploader({
                 )}
                 <button
                   type="button"
-                  className="absolute top-2 right-2 z-10 bg-black/70 text-white w-7 h-7 rounded-full text-sm hover:bg-black transition"
+                  className="absolute top-2 right-2 z-10 bg-black/50 text-white w-5 h-5 rounded-full text-sm hover:bg-black transition"
                   onClick={() => removeImage(index)}
                 >
                   X
@@ -136,6 +156,13 @@ export default function ImageUploader({
                 />
               </div>
             ))}
+          </div>
+        )}
+        {imageError && (
+          <div className="mt-4 border border-red-200 bg-red-50 text-red-700 rounded-xl px-4 py-3">
+            <p className="font-medium">Limite de imagens atingido</p>
+
+            <p className="text-sm mt-1">{imageError}</p>
           </div>
         )}
       </div>
