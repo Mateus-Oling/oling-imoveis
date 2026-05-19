@@ -20,7 +20,21 @@ export default function ImageUploader({
   setImageError,
 }: Props) {
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: (acceptedFiles) => {
+    onDrop: (acceptedFiles, fileRejections) => {
+      let errorMessage = ""
+
+      if (fileRejections.length > 0) {
+        const firstError = fileRejections[0].errors[0].code
+
+        if (firstError === "file-invalid-type") {
+          errorMessage = "Há arquivos que não são imagens válidas."
+        }
+
+        if (firstError === "file-too-large") {
+          errorMessage = "Uma ou mais imagens excedem o tamanho máximo de 20MB."
+        }
+      }
+
       setImages((prevImages) => {
         const remainingSlots = 20 - prevImages.length
 
@@ -29,16 +43,18 @@ export default function ImageUploader({
         const rejectedCount = acceptedFiles.length - filesToAdd.length
 
         if (rejectedCount > 0) {
-          setImageError(
-            `${rejectedCount} imagem(ns) não foram adicionadas porque o limite máximo é 20.`,
-          )
-        } else {
-          setImageError("")
+          errorMessage = `${rejectedCount} imagem(ns) não foram adicionadas porque o limite máximo é 20.`
         }
 
         return [...prevImages, ...filesToAdd]
       })
+      setImageError(errorMessage)
     },
+    accept: {
+      "image/*": [],
+    },
+
+    maxSize: 20 * 1024 * 1024,
   })
 
   function removeImage(indexToRemove: number) {
@@ -160,8 +176,6 @@ export default function ImageUploader({
         )}
         {imageError && (
           <div className="mt-4 border border-red-200 bg-red-50 text-red-700 rounded-xl px-4 py-3">
-            <p className="font-medium">Limite de imagens atingido</p>
-
             <p className="text-sm mt-1">{imageError}</p>
           </div>
         )}
