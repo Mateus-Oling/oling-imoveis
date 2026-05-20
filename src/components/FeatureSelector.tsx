@@ -52,10 +52,10 @@ export default function FeatureSelector({
   )
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 bg-white border border-gray-200 rounded-2xl p-6 space-y-6">
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-gray-900">Características</h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-base text-gray-500 mt-1">
           Selecione as características que se aplicam ao imóvel.
         </p>
       </div>
@@ -66,7 +66,7 @@ export default function FeatureSelector({
             key={category}
             className="border border-gray-200 rounded-xl p-4 bg-white shadow-sm"
           >
-            <h3 className="text-sm font-semibold text-gray-800 mb-4 capitalize">
+            <h3 className="text-base font-semibold text-gray-800 mb-4 capitalize">
               {category.replace("_", " ")}
             </h3>
 
@@ -74,7 +74,7 @@ export default function FeatureSelector({
               {items.map((feature) => (
                 <label
                   key={feature.id}
-                  className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900"
+                  className="flex items-center gap-2 text-base text-gray-600 cursor-pointer hover:text-gray-900"
                 >
                   <input
                     type="checkbox"
