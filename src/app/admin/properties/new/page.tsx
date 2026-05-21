@@ -62,6 +62,27 @@ export default function NewPropertyPage() {
         throw relationError
       }
 
+      if (images.length > 0) {
+        const firstImage = images[0]
+        const fileName = `${Date.now()}-${firstImage.name}`
+
+        const { data: imageData, error: imageError } = await supabase.storage
+          .from("property-images")
+          .upload(fileName, firstImage)
+
+        if (imageError) {
+          throw imageError
+        }
+
+        console.log("Imagem enviada:", imageData)
+
+        const { data: publicUrlData } = supabase.storage
+          .from("property-images")
+          .getPublicUrl(imageData.path)
+
+        console.log("URL pública:", publicUrlData.publicUrl)
+      }
+
       setFeedback({
         type: "success",
         message: "Imóvel cadastrado com sucesso!",
@@ -100,7 +121,7 @@ export default function NewPropertyPage() {
             />
 
             <div>
-              <label className="text-base font-medium">Tipo do imóvel *</label>
+              <label className="text-base font-medium">Tipo do imóvel*</label>
               <select
                 {...register("type")}
                 className={`w-full border rounded-md px-3 py-2 text-base ${
@@ -120,7 +141,7 @@ export default function NewPropertyPage() {
             </div>
 
             <FormField
-              label="Endereço"
+              label="Endereço*"
               name="address"
               register={register}
               error={errors.address}
@@ -144,7 +165,7 @@ export default function NewPropertyPage() {
             />
 
             <FormField
-              label="Bairro"
+              label="Bairro*"
               name="neighborhood"
               register={register}
               error={errors.neighborhood}
@@ -152,7 +173,7 @@ export default function NewPropertyPage() {
             />
 
             <FormField
-              label="Cidade"
+              label="Cidade*"
               name="city"
               register={register}
               error={errors.city}
@@ -160,7 +181,7 @@ export default function NewPropertyPage() {
             />
 
             <FormField
-              label="CEP"
+              label="CEP*"
               name="zip_code"
               register={register}
               error={errors.zip_code}
@@ -219,7 +240,7 @@ export default function NewPropertyPage() {
 
             <div className="w-35 flex justify-center">
               <FormField
-                label="Preço *"
+                label="Preço*"
                 name="price"
                 type="number"
                 register={register}
@@ -356,37 +377,38 @@ export default function NewPropertyPage() {
           selectedFeatures={selectedFeatures}
           setSelectedFeatures={setSelectedFeatures}
         />
-      </form>
-      <ImageUploader
-        images={images}
-        setImages={setImages}
-        coverIndex={coverIndex}
-        setCoverIndex={setCoverIndex}
-        imageError={imageError}
-        setImageError={setImageError}
-      />
 
-      <div className="flex justify-center mt-8">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className=" bg-emerald-600 hover:bg-emerald-700 text-white text-lg px-9 py-4 rounded-xl font-medium transition shadow-sm mt-6 mb-6"
-        >
-          {isSubmitting ? "Cadastrando imóvel..." : "Cadastrar imóvel"}
-        </button>
-      </div>
+        <ImageUploader
+          images={images}
+          setImages={setImages}
+          coverIndex={coverIndex}
+          setCoverIndex={setCoverIndex}
+          imageError={imageError}
+          setImageError={setImageError}
+        />
 
-      {feedback.type && (
-        <div
-          className={`p-3 rounded-md text-sm font-medium ${
-            feedback.type === "success"
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
-          {feedback.message}
+        <div className="flex justify-center mt-8">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className=" bg-emerald-600 hover:bg-emerald-700 text-white text-lg px-9 py-4 rounded-xl font-medium transition shadow-sm mt-6 mb-6"
+          >
+            {isSubmitting ? "Cadastrando imóvel..." : "Cadastrar imóvel"}
+          </button>
         </div>
-      )}
+
+        {feedback.type && (
+          <div
+            className={`p-3 rounded-md text-sm font-medium ${
+              feedback.type === "success"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {feedback.message}
+          </div>
+        )}
+      </form>
     </main>
   )
 }
