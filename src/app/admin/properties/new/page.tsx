@@ -63,24 +63,46 @@ export default function NewPropertyPage() {
       }
 
       if (images.length > 0) {
-        const firstImage = images[0]
-        const fileName = `${Date.now()}-${firstImage.name}`
+        const uploadedImages = await Promise.all(
+          images.map(async (image) => {
+            const fileName = `${Date.now()}-${image.name}`
 
-        const { data: imageData, error: imageError } = await supabase.storage
-          .from("property-images")
-          .upload(fileName, firstImage)
+            const { data: imageData, error: imageError } =
+              await supabase.storage
+                .from("property-images")
+                .upload(fileName, image)
 
-        if (imageError) {
-          throw imageError
+            if (imageError) {
+              throw imageError
+            }
+
+            const { data: publicUrlData } = supabase.storage
+              .from("property-images")
+              .getPublicUrl(imageData.path)
+
+            return {
+              path: imageData.path,
+              url: publicUrlData.publicUrl,
+            }
+          }),
+        )
+
+        const imageRows = uploadedImages.map((image, index) => ({
+          property_id: property.id,
+          image_url: image.url,
+          image_path: image.path,
+          is_cover: index === 0,
+        }))
+
+        const { error: imageInsertError } = await supabase
+          .from("property_images")
+          .insert(imageRows)
+
+        if (imageInsertError) {
+          throw imageInsertError
         }
 
-        console.log("Imagem enviada:", imageData)
-
-        const { data: publicUrlData } = supabase.storage
-          .from("property-images")
-          .getPublicUrl(imageData.path)
-
-        console.log("URL pública:", publicUrlData.publicUrl)
+        console.log("Imagens enviadas:", uploadedImages)
       }
 
       setFeedback({
