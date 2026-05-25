@@ -12,6 +12,40 @@ import ImageUploader from "@/components/ImageUploader"
 
 type FormData = z.infer<typeof propertySchema>
 
+function buildImageRows(propertyId: string, uploadedImages: unknown[]) {
+  return uploadedImages.map((uploadedImage, index) => ({
+    property_id: propertyId,
+    image_url: uploadedImage.url,
+    image_path: uploadedImage.path,
+    is_cover: index === 0,
+  }))
+}
+
+async function uploadImages(files: File[]) {
+  return await Promise.all(
+    files.map(async (file) => {
+      const fileName = `${Date.now()}-${file.name}`
+
+      const { data: imageData, error: imageError } = await supabase.storage
+        .from("property-images")
+        .upload(fileName, file)
+
+      if (imageError) {
+        throw imageError
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from("property-images")
+        .getPublicUrl(imageData.path)
+
+      return {
+        path: imageData.path,
+        url: publicUrlData.publicUrl,
+      }
+    }),
+  )
+}
+
 export default function NewPropertyPage() {
   const [feedback, setFeedback] = useState<{
     type: "success" | "error" | null
@@ -63,36 +97,9 @@ export default function NewPropertyPage() {
       }
 
       if (images.length > 0) {
-        const uploadedImages = await Promise.all(
-          images.map(async (image) => {
-            const fileName = `${Date.now()}-${image.name}`
+        const uploadedImages = await uploadImages(images)
 
-            const { data: imageData, error: imageError } =
-              await supabase.storage
-                .from("property-images")
-                .upload(fileName, image)
-
-            if (imageError) {
-              throw imageError
-            }
-
-            const { data: publicUrlData } = supabase.storage
-              .from("property-images")
-              .getPublicUrl(imageData.path)
-
-            return {
-              path: imageData.path,
-              url: publicUrlData.publicUrl,
-            }
-          }),
-        )
-
-        const imageRows = uploadedImages.map((image, index) => ({
-          property_id: property.id,
-          image_url: image.url,
-          image_path: image.path,
-          is_cover: index === 0,
-        }))
+        const imageRows = buildImageRows(property.id, uploadedImages)
 
         const { error: imageInsertError } = await supabase
           .from("property_images")
@@ -112,6 +119,8 @@ export default function NewPropertyPage() {
 
       reset()
       setSelectedFeatures([])
+      setImages([])
+      setCoverIndex(0)
       window.scrollTo({ top: 0, behavior: "smooth" })
     } catch (err) {
       console.error(err)
