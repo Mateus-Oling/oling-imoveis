@@ -20,36 +20,36 @@ export default function PropertyCard({
   property: propertyData,
 }: PropertyCardProps) {
   return (
-    <div className="flex items-start justify-between rounded-2xl border border-gray-200 bg-white p-4">
-      <div className="flex items-center gap-4">
+    <div className="mb-8 flex items-start justify-between rounded-3xl bg-gray-50 p-4 shadow-sm lg:p-5 xl:mb-10 xl:p-8 2xl:mb-12 2xl:p-10">
+      <div className="flex items-center gap-4 lg:gap-6 xl:gap-8">
         {propertyData.image_url ? (
           <Image
             src={propertyData.image_url}
             alt={propertyData.title}
-            className="h-32 w-52 rounded-xl object-cover"
-            width={208}
-            height={128}
+            width={384}
+            height={224}
+            className="h-24 w-40 rounded-3xl object-cover lg:h-32 lg:w-56 xl:h-42 xl:w-72 2xl:h-66 2xl:w-[480px]"
           />
         ) : (
-          <div className="h-32 w-52 rounded-xl bg-gray-200" />
+          <div className="h-24 w-40 rounded-3xl bg-gray-200 lg:h-32 lg:w-56 xl:h-42 xl:w-72 2xl:h-66 2xl:w-[480px]" />
         )}
 
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-4">
-            <span className="rounded-2xl bg-green-100 px-1 py-1 text-sm font-medium text-green-800">
+        <div className="flex min-h-[96px] flex-col justify-between lg:min-h-[128px] xl:min-h-[160px] 2xl:min-h-[200px]">
+          <div className="flex items-center gap-3 lg:gap-4 xl:gap-5">
+            <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800 lg:px-4 lg:py-1.5 lg:text-sm xl:px-5 xl:py-2 xl:text-base">
               {propertyData.type}
             </span>
 
-            <h2 className="text-2xl font-semibold text-gray-900">
+            <h2 className="text-base font-semibold text-gray-900 lg:text-xl xl:text-2xl 2xl:text-4xl">
               {propertyData.title}
             </h2>
           </div>
 
-          <p className="text-base text-gray-500">
+          <p className="text-base text-gray-500 lg:text-lg xl:text-xl 2xl:text-2xl">
             {propertyData.neighborhood}, {propertyData.city}
           </p>
 
-          <div className="flex items-center gap-12 text-gray-600">
+          <div className="flex items-center gap-4 text-base text-gray-600 lg:gap-6 lg:text-lg xl:gap-8 xl:text-xl 2xl:gap-12 2xl:text-2xl">
             <span>{propertyData.area} m²</span>
 
             {(propertyData.type === "casa" ||
@@ -60,20 +60,20 @@ export default function PropertyCard({
         </div>
       </div>
 
-      <div className="flex flex-col items-start gap-4 pt-3">
-        <span className="text-xl font-bold text-gray-900">
+      <div className="flex flex-col items-start gap-3 lg:gap-4 xl:gap-8 2xl:gap-10">
+        <span className="text-base font-bold text-gray-900 lg:text-xl xl:text-2xl 2xl:text-3xl 2xl:mt-3">
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
           }).format(propertyData.price)}
         </span>
 
-        <div className="flex items-start gap-3">
-          <button className="rounded-xl border border-gray-300 px-5 py-1.5 font-medium text-gray-700 transition hover:bg-gray-100">
+        <div className="flex gap-2 lg:gap-3 xl:gap-4">
+          <button className="rounded-xl border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 lg:px-5 lg:py-2.5 lg:text-base xl:px-6 xl:py-3 xl:text-lg 2xl:text-2xl">
             Editar
           </button>
 
-          <button className="rounded-xl border border-red-200 px-4 py-1.5 font-medium text-red-600 transition hover:bg-red-50">
+          <button className="rounded-xl border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 lg:px-5 lg:py-2.5 lg:text-base xl:px-6 xl:py-3 xl:text-lg 2xl:text-2xl">
             Excluir
           </button>
         </div>
