@@ -20,7 +20,7 @@ export default function PropertyCard({
   property: propertyData,
 }: PropertyCardProps) {
   return (
-    <div className="mb-8 flex items-start justify-between rounded-3xl bg-gray-50 p-4 shadow-sm lg:p-5 xl:mb-10 xl:p-8 2xl:mb-12 2xl:p-10">
+    <div className="mb-8 flex items-start justify-between rounded-3xl bg-white p-4 shadow-sm lg:p-5 xl:mb-10 xl:p-8 2xl:mb-12 2xl:p-10">
       <div className="flex items-center gap-4 lg:gap-6 xl:gap-8">
         {propertyData.image_url ? (
           <Image
