@@ -48,14 +48,14 @@ export default function Teste() {
   ]
 
   return (
-    <div className="mx-auto w-full max-w-[1400px] xl:max-w-[1600px] 2xl:max-w-[1900px] ">
+    <div className="mx-auto w-full max-w-[1200px] xl:max-w-[1400px] 2xl:max-w-[1600px] ">
       <header className="mb-8 xl:mb-10 2xl:mb-16 flex items-center justify-between">
         <div>
-          <h1 className="text-4xl xl:text-5xl 2xl:text-6xl font-bold">
+          <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold">
             Gerenciar Imóveis
           </h1>
 
-          <p className="mt-2 text-base xl:text-lg 2xl:text-xl text-gray-500">
+          <p className="mt-2 text-sm xl:text-lg 2xl:text-xl text-gray-500">
             Visualize, edite ou remova os imóveis cadastrados.
           </p>
         </div>

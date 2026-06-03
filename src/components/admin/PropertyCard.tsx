@@ -20,27 +20,27 @@ export default function PropertyCard({
   property: propertyData,
 }: PropertyCardProps) {
   return (
-    <div className="mb-8 flex items-start justify-between rounded-3xl bg-white p-4 shadow-sm lg:p-5 xl:mb-10 xl:p-8 2xl:mb-12 2xl:p-10">
-      <div className="flex items-center gap-4 lg:gap-6 xl:gap-8">
+    <div className="mb-8 flex items-start justify-between rounded-3xl bg-white p-4 shadow-sm lg:p-5 xl:mb-10 xl:p-8 2xl:mb-12">
+      <div className="flex items-center gap-4 lg:gap-6 xl:gap-5">
         {propertyData.image_url ? (
           <Image
             src={propertyData.image_url}
             alt={propertyData.title}
-            width={384}
-            height={224}
-            className="h-24 w-40 rounded-3xl object-cover lg:h-32 lg:w-56 xl:h-42 xl:w-72 2xl:h-66 2xl:w-[480px]"
+            width={400}
+            height={260}
+            className="h-20 w-36 rounded-3xl object-cover lg:h-32 lg:w-56 xl:h-40 xl:w-72  2xl:h-50 2xl:w-[360px]"
           />
         ) : (
-          <div className="h-24 w-40 rounded-3xl bg-gray-200 lg:h-32 lg:w-56 xl:h-42 xl:w-72 2xl:h-66 2xl:w-[480px]" />
+          <div className="h-20 w-36 rounded-3xl bg-gray-200 lg:h-32 lg:w-56 xl:h-42 xl:w-72 2xl:h-52 2xl:w-[440px]" />
         )}
 
-        <div className="flex min-h-[96px] flex-col justify-between lg:min-h-[128px] xl:min-h-[160px] 2xl:min-h-[200px]">
+        <div className="flex min-h-[96px] flex-col justify-between lg:min-h-[128px] xl:min-h-[160px] 2xl:min-h-[200px] ">
           <div className="flex items-center gap-3 lg:gap-4 xl:gap-5">
             <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800 lg:px-4 lg:py-1.5 lg:text-sm xl:px-5 xl:py-2 xl:text-base">
               {propertyData.type}
             </span>
 
-            <h2 className="text-base font-semibold text-gray-900 lg:text-xl xl:text-2xl 2xl:text-4xl">
+            <h2 className="text-sm font-semibold text-gray-900 lg:text-xl xl:text-2xl 2xl:text-3xl">
               {propertyData.title}
             </h2>
           </div>
@@ -61,7 +61,7 @@ export default function PropertyCard({
       </div>
 
       <div className="flex flex-col items-start gap-3 lg:gap-4 xl:gap-8 2xl:gap-10">
-        <span className="text-base font-bold text-gray-900 lg:text-xl xl:text-2xl 2xl:text-3xl 2xl:mt-3">
+        <span className="text-base font-bold text-gray-900 lg:text-base xl:text-xl  xl:mt-2.5 2xl:text-2xl 2xl:mt-10">
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
