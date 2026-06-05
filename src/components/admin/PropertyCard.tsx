@@ -1,7 +1,9 @@
 import React from "react"
 import Image from "next/image"
+import Link from "next/link"
 
 type Property = {
+  id: number
   title: string
   type: string
   city: string
@@ -61,7 +63,7 @@ export default function PropertyCard({
       </div>
 
       <div className="flex flex-col items-start gap-3 lg:gap-4 xl:gap-8 2xl:gap-10">
-        <span className="text-base font-bold text-gray-900 lg:text-base xl:text-xl  xl:mt-2.5 2xl:text-2xl 2xl:mt-10">
+        <span className="text-base font-bold text-gray-900 lg:text-base xl:text-xl  xl:mt-2.5 2xl:text-2xl ">
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
@@ -69,9 +71,12 @@ export default function PropertyCard({
         </span>
 
         <div className="flex gap-2 lg:gap-3 xl:gap-4">
-          <button className="rounded-xl border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 lg:px-5 lg:py-2.5 lg:text-base xl:px-6 xl:py-3 xl:text-lg 2xl:text-2xl">
+          <Link
+            href={`/admin/properties/${propertyData.id}/edit`}
+            className="rounded-xl border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 lg:px-5 lg:py-2.5 lg:text-base xl:px-6 xl:py-3 xl:text-lg 2xl:text-2xl"
+          >
             Editar
-          </button>
+          </Link>
 
           <button className="rounded-xl border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 lg:px-5 lg:py-2.5 lg:text-base xl:px-6 xl:py-3 xl:text-lg 2xl:text-2xl">
             Excluir

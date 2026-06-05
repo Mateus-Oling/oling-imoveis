@@ -11,8 +11,8 @@ export default function AdminLayout({
             Guido Imóveis
           </h1>
 
-          <nav className="flex flex-col gap-8 xl:gap-10 2xl:gap-14 mt-20 xl:mt-24 2xl:mt-46 items-center">
-            <button className="w-full rounded-2xl px-6 py-4 xl:px-8 xl:py-5 2xl:px-10 2xl:py-10 text-center text-lg xl:text-xl 2xl:text-3xl 2xl:mb-14 font-semibold transition hover:bg-white/20">
+          <nav className="flex flex-col gap-6 xl:gap-10 2xl:gap-14 mt-20 xl:mt-24 2xl:mt-40 items-center">
+            <button className="w-full rounded-2xl px-6 py-4 xl:px-8 xl:py-5 2xl:px-10 2xl:py-10 text-center text-lg xl:text-xl 2xl:text-3xl 2xl:mb-8 font-semibold transition hover:bg-white/20">
               Gerenciar Imóveis
             </button>
 
