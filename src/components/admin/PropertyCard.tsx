@@ -1,18 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-
-type Property = {
-  id: number
-  title: string
-  type: string
-  city: string
-  neighborhood: string
-  price: number
-  area: number
-  bedrooms: number
-  image_url: string
-}
+import { Property } from "@/types/property"
 
 type PropertyCardProps = {
   property: Property

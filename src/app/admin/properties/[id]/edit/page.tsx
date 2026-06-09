@@ -1,4 +1,4 @@
-import Teste from "../../../properties/page"
+import PropertyForm from "@/components/admin/PropertyForm"
 import { mockProperties } from "@/data/mock-properties"
 
 type Props = {
@@ -16,9 +16,7 @@ export default async function EditPropertyPage({ params }: Props) {
 
   return (
     <>
-      <h1>Editar imóvel</h1>
-      <p>Imóvel n° {resolvedParams.id}</p>
-      <p>{propertyBeingEdited?.title}</p>
+      <PropertyForm initialData={propertyBeingEdited} />
     </>
   )
 }

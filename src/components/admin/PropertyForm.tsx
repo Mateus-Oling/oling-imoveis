@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -7,8 +9,13 @@ import FormField from "@/components/form/FormField"
 import FeatureSelector from "@/components/FeatureSelector"
 import ImageUploader from "@/components/ImageUploader"
 import { supabase } from "@/lib/supabase"
+import { Property } from "@/types/property"
 
 type FormData = z.infer<typeof propertySchema>
+
+type PropertyFormProps = {
+  initialData?: Property
+}
 
 function buildImageRows(propertyId: string, uploadedImages: unknown[]) {
   return uploadedImages.map((uploadedImage, index) => ({
@@ -44,7 +51,7 @@ async function uploadImages(files: File[]) {
   )
 }
 
-export default function PropertyForm() {
+export default function PropertyForm({ initialData }: PropertyFormProps) {
   const {
     register,
     handleSubmit,
@@ -52,7 +59,28 @@ export default function PropertyForm() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(propertySchema),
-    defaultValues: {},
+    defaultValues: {
+      title: initialData?.title ?? "",
+      type: initialData?.type ?? "",
+      address: initialData?.address ?? "",
+      complement: initialData?.complement ?? "",
+      neighborhood: initialData?.neighborhood ?? "",
+      city: initialData?.city ?? "",
+      zipCode: initialData?.zipCode ?? "",
+      condition: initialData?.condition ?? "",
+      area: initialData?.area ?? undefined,
+      builtArea: initialData?.builtArea ?? undefined,
+      price: initialData?.price ?? undefined,
+      bedrooms: initialData?.bedrooms ?? undefined,
+      suites: initialData?.suites ?? undefined,
+      bathrooms: initialData?.bathrooms ?? undefined,
+      otherRooms: initialData?.otherRooms ?? undefined,
+      coveredParkingSpaces: initialData?.coveredParkingSpaces ?? undefined,
+      uncoveredParkingSpaces: initialData?.uncoveredParkingSpaces ?? undefined,
+      constructionYear: initialData?.constructionYear ?? undefined,
+      sunPosition: initialData?.sunPosition ?? "",
+      description: initialData?.description ?? "",
+    },
   })
 
   const [feedback, setFeedback] = useState<{
