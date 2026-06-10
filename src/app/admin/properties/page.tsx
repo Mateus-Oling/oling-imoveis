@@ -1,8 +1,12 @@
 import PropertyCard from "@/components/admin/PropertyCard"
 import Link from "next/link"
-import { mockProperties } from "@/data/mock-properties"
+import { supabase } from "@/lib/supabase"
 
-export default function Teste() {
+export default async function Admin() {
+  const { data: propertiesFromDatabase, error } = await supabase
+    .from("properties")
+    .select("*")
+
   return (
     <div className="mx-auto w-full max-w-[1200px] xl:max-w-[1400px] 2xl:max-w-[1600px] ">
       <header className="mb-8 xl:mb-10 2xl:mb-16 flex items-center justify-between">
@@ -25,8 +29,11 @@ export default function Teste() {
       </header>
 
       <section aria-label="Lista de imóveis">
-        {mockProperties.map((propertyItem) => (
-          <PropertyCard key={propertyItem.title} property={propertyItem} />
+        {propertiesFromDatabase?.map((currentPropertyFromDatabase) => (
+          <PropertyCard
+            key={currentPropertyFromDatabase.id}
+            property={currentPropertyFromDatabase}
+          />
         ))}
       </section>
     </div>

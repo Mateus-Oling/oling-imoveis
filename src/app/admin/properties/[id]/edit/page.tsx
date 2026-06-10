@@ -1,17 +1,24 @@
 import PropertyForm from "@/components/admin/PropertyForm"
-import { mockProperties } from "@/data/mock-properties"
+import { supabase } from "@/lib/supabase"
 
 type Props = {
   params: {
-    id: number
+    id: string
   }
 }
 
 export default async function EditPropertyPage({ params }: Props) {
+  // const { data: propertyToEdit, error } = await supabase
+  //   .from("properties")
+  //   .select("*")
+
   const resolvedParams = await params
-  const propertyBeingEdited = mockProperties.find(
-    (currentProperty) => currentProperty.id === Number(resolvedParams.id),
-  )
+  const { data: propertyBeingEdited } = await supabase
+    .from("properties")
+    .select("*")
+    .eq("id", resolvedParams.id)
+    .single()
+
   console.log(propertyBeingEdited)
 
   return (

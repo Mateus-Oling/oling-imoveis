@@ -1,11 +1,16 @@
 export type Property = {
-  id: number
+  id: string
   title: string
   type: string
   city: string
   neighborhood: string
   price: number
-  area: number
+  area_total: number
+  area_built: number
   bedrooms: number
-  image_url: string
+  bathrooms: number
+  suites: number
+  address: string
+  complement: string | null
+  image_url?: string
 }

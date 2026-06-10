@@ -41,7 +41,7 @@ export default function PropertyCard({
           </p>
 
           <div className="flex items-center gap-4 text-base text-gray-600 lg:gap-6 lg:text-lg xl:gap-8 xl:text-xl 2xl:gap-12 2xl:text-2xl">
-            <span>{propertyData.area} m²</span>
+            <span>{propertyData.area_total} m²</span>
 
             {(propertyData.type === "casa" ||
               propertyData.type === "apartamento") && (

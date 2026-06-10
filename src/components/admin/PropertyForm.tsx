@@ -52,6 +52,8 @@ async function uploadImages(files: File[]) {
 }
 
 export default function PropertyForm({ initialData }: PropertyFormProps) {
+  const isEditing = initialData ? true : false
+
   const {
     register,
     handleSubmit,
@@ -66,19 +68,19 @@ export default function PropertyForm({ initialData }: PropertyFormProps) {
       complement: initialData?.complement ?? "",
       neighborhood: initialData?.neighborhood ?? "",
       city: initialData?.city ?? "",
-      zipCode: initialData?.zipCode ?? "",
+      zip_code: initialData?.zip_code ?? "",
       condition: initialData?.condition ?? "",
-      area: initialData?.area ?? undefined,
-      builtArea: initialData?.builtArea ?? undefined,
+      area_total: initialData?.area_total ?? undefined,
+      area_built: initialData?.area_built ?? undefined,
       price: initialData?.price ?? undefined,
       bedrooms: initialData?.bedrooms ?? undefined,
       suites: initialData?.suites ?? undefined,
       bathrooms: initialData?.bathrooms ?? undefined,
-      otherRooms: initialData?.otherRooms ?? undefined,
-      coveredParkingSpaces: initialData?.coveredParkingSpaces ?? undefined,
-      uncoveredParkingSpaces: initialData?.uncoveredParkingSpaces ?? undefined,
-      constructionYear: initialData?.constructionYear ?? undefined,
-      sunPosition: initialData?.sunPosition ?? "",
+      other_rooms: initialData?.other_rooms ?? undefined,
+      garage_uncovered: initialData?.garage_uncovered ?? undefined,
+      garage_covered: initialData?.garage_covered ?? undefined,
+      year_built: initialData?.year_built ?? "",
+      sun_position: initialData?.sun_position ?? "",
       description: initialData?.description ?? "",
     },
   })
@@ -97,14 +99,35 @@ export default function PropertyForm({ initialData }: PropertyFormProps) {
   const [imageError, setImageError] = useState("")
 
   async function onSubmit(data: FormData) {
+    console.log("FORM DATA")
+    console.log(data)
+
     try {
       setFeedback({ type: null, message: "" })
 
-      const { data: property, error } = await supabase
-        .from("properties")
-        .insert(data)
-        .select()
-        .single()
+      let property
+      let error
+
+      if (isEditing) {
+        const response = await supabase
+          .from("properties")
+          .update(data)
+
+          .eq("id", initialData.id)
+          .select()
+
+        property = response.data
+        error = response.error
+      } else {
+        const response = await supabase
+          .from("properties")
+          .insert(data)
+          .select()
+          .single()
+
+        property = response.data
+        error = response.error
+      }
 
       if (error) {
         throw error
@@ -159,6 +182,7 @@ export default function PropertyForm({ initialData }: PropertyFormProps) {
 
   return (
     <main>
+      <p>{isEditing ? "MODO EDIÇÃO" : "MODO CRIAÇÃO"}</p>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-6">
           <h3 className="text-xl font-semibold text-gray-900">
@@ -447,7 +471,13 @@ export default function PropertyForm({ initialData }: PropertyFormProps) {
             disabled={isSubmitting}
             className=" bg-emerald-600 hover:bg-emerald-700 text-white text-lg px-9 py-4 rounded-xl font-medium transition shadow-sm mt-6 mb-6"
           >
-            {isSubmitting ? "Cadastrando imóvel..." : "Cadastrar imóvel"}
+            {isSubmitting
+              ? isEditing
+                ? "Salvando alterações..."
+                : "Cadastrando imóvel..."
+              : isEditing
+                ? "Salvar alterações"
+                : "Cadastrar imóvel"}
           </button>
         </div>
       </form>
