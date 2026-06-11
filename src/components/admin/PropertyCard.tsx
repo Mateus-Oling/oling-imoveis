@@ -2,6 +2,8 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Property } from "@/types/property"
+import { supabase } from "@/lib/supabase"
+import DeleteButton from "@/components/admin/DeleteButton"
 
 type PropertyCardProps = {
   property: Property
@@ -67,9 +69,7 @@ export default function PropertyCard({
             Editar
           </Link>
 
-          <button className="rounded-xl border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 lg:px-5 lg:py-2.5 lg:text-base xl:px-6 xl:py-3 xl:text-lg 2xl:text-2xl">
-            Excluir
-          </button>
+          <DeleteButton propertyId={propertyData.id}>Excluir</DeleteButton>
         </div>
       </div>
     </div>
