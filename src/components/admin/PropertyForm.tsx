@@ -15,6 +15,7 @@ type FormData = z.infer<typeof propertySchema>
 
 type PropertyFormProps = {
   initialData?: Property
+  initialFeatures?: string[]
 }
 
 function buildImageRows(propertyId: string, uploadedImages: unknown[]) {
@@ -51,7 +52,10 @@ async function uploadImages(files: File[]) {
   )
 }
 
-export default function PropertyForm({ initialData }: PropertyFormProps) {
+export default function PropertyForm({
+  initialData,
+  initialFeatures,
+}: PropertyFormProps) {
   const isEditing = initialData ? true : false
 
   const {
@@ -93,15 +97,14 @@ export default function PropertyForm({ initialData }: PropertyFormProps) {
     message: "",
   })
 
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(
+    initialFeatures ?? [],
+  )
   const [images, setImages] = useState<File[]>([])
   const [coverIndex, setCoverIndex] = useState(0)
   const [imageError, setImageError] = useState("")
 
   async function onSubmit(data: FormData) {
-    console.log("FORM DATA")
-    console.log(data)
-
     try {
       setFeedback({ type: null, message: "" })
 
@@ -112,9 +115,9 @@ export default function PropertyForm({ initialData }: PropertyFormProps) {
         const response = await supabase
           .from("properties")
           .update(data)
-
           .eq("id", initialData.id)
           .select()
+          .single()
 
         property = response.data
         error = response.error
@@ -131,6 +134,17 @@ export default function PropertyForm({ initialData }: PropertyFormProps) {
 
       if (error) {
         throw error
+      }
+
+      if (isEditing) {
+        const { error: deleteRelationsError } = await supabase
+          .from("property_feature_relations")
+          .delete()
+          .eq("property_id", initialData.id)
+
+        if (deleteRelationsError) {
+          throw deleteRelationsError
+        }
       }
 
       const relations = selectedFeatures.map((featureId) => ({
@@ -165,10 +179,12 @@ export default function PropertyForm({ initialData }: PropertyFormProps) {
         message: "Imóvel cadastrado com sucesso!",
       })
 
-      reset()
-      setSelectedFeatures([])
-      setImages([])
-      setCoverIndex(0)
+      if (!isEditing) {
+        reset()
+        setSelectedFeatures([])
+        setImages([])
+        setCoverIndex(0)
+      }
       window.scrollTo({ top: 0, behavior: "smooth" })
     } catch (err) {
       console.error(err)

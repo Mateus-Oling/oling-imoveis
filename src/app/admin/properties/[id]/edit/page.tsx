@@ -8,10 +8,6 @@ type Props = {
 }
 
 export default async function EditPropertyPage({ params }: Props) {
-  // const { data: propertyToEdit, error } = await supabase
-  //   .from("properties")
-  //   .select("*")
-
   const resolvedParams = await params
   const { data: propertyBeingEdited } = await supabase
     .from("properties")
@@ -19,11 +15,20 @@ export default async function EditPropertyPage({ params }: Props) {
     .eq("id", resolvedParams.id)
     .single()
 
-  console.log(propertyBeingEdited)
+  const { data: propertyFeatures } = await supabase
+    .from("property_feature_relations")
+    .select("feature_id")
+    .eq("property_id", resolvedParams.id)
+
+  const selectedFeaturesIds =
+    propertyFeatures?.map((currentFeature) => currentFeature.feature_id) ?? []
 
   return (
     <>
-      <PropertyForm initialData={propertyBeingEdited} />
+      <PropertyForm
+        initialData={propertyBeingEdited}
+        initialFeatures={selectedFeaturesIds}
+      />
     </>
   )
 }

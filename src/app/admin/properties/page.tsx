@@ -8,7 +8,7 @@ export default async function Admin() {
     .select("*")
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] xl:max-w-[1400px] 2xl:max-w-[1600px] ">
+    <div className="mx-auto w-full max-w-1200px xl:max-w-1400px 2xl:max-w-1600px ">
       <header className="mb-8 xl:mb-10 2xl:mb-16 flex items-center justify-between">
         <div>
           <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold">
