@@ -20,6 +20,11 @@ export default async function EditPropertyPage({ params }: Props) {
     .select("feature_id")
     .eq("property_id", resolvedParams.id)
 
+  const { data: propertyImages, error: propertyImagesError } = await supabase
+    .from("property_images")
+    .select("*")
+    .eq("property_id", resolvedParams.id)
+
   const selectedFeaturesIds =
     propertyFeatures?.map((currentFeature) => currentFeature.feature_id) ?? []
 
@@ -28,6 +33,7 @@ export default async function EditPropertyPage({ params }: Props) {
       <PropertyForm
         initialData={propertyBeingEdited}
         initialFeatures={selectedFeaturesIds}
+        initialImages={propertyImages ?? []}
       />
     </>
   )

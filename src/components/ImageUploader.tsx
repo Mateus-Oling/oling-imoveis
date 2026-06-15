@@ -1,10 +1,15 @@
 import Image from "next/image"
 import React from "react"
 import { useDropzone } from "react-dropzone"
+import { PropertyImage } from "@/types/property-image"
 
 type Props = {
-  images: File[]
-  setImages: (images: File[]) => void
+  savedImages: PropertyImage[]
+  setSavedImages: React.Dispatch<React.SetStateAction<PropertyImage[]>>
+  deletedImages: PropertyImage[]
+  setDeletedImages: React.Dispatch<React.SetStateAction<PropertyImage[]>>
+  newImages: File[]
+  setNewImages: React.Dispatch<React.SetStateAction<File[]>>
   coverIndex: number
   setCoverIndex: (index: number) => void
   imageError: string
@@ -12,8 +17,12 @@ type Props = {
 }
 
 export default function ImageUploader({
-  images,
-  setImages,
+  savedImages,
+  setSavedImages,
+  deletedImages,
+  setDeletedImages,
+  newImages,
+  setNewImages,
   coverIndex,
   setCoverIndex,
   imageError,
@@ -35,7 +44,7 @@ export default function ImageUploader({
         }
       }
 
-      setImages((prevImages) => {
+      setNewImages((prevImages) => {
         const remainingSlots = 20 - prevImages.length
 
         const filesToAdd = acceptedFiles.slice(0, remainingSlots)
@@ -58,14 +67,28 @@ export default function ImageUploader({
   })
 
   function removeImage(indexToRemove: number) {
-    setImages((prevImages) =>
-      prevImages.filter((_, index) => index !== indexToRemove),
-    )
+    if (indexToRemove < savedImages.length) {
+      const imageToDelete = savedImages[indexToRemove]
+
+      setDeletedImages((prev) => [...prev, imageToDelete])
+
+      setSavedImages((prevImages) =>
+        prevImages.filter((_, index) => index !== indexToRemove),
+      )
+    } else {
+      const newImageIndex = indexToRemove - savedImages.length
+
+      setNewImages((prevImages) =>
+        prevImages.filter((_, index) => index !== newImageIndex),
+      )
+    }
 
     if (coverIndex === indexToRemove) {
       setCoverIndex(0)
     }
   }
+
+  const allImages = [...savedImages, ...newImages]
 
   return (
     <section className="relative isolate mt-10 border border-gray-200 rounded-2xl p-6 bg-white">
@@ -121,10 +144,10 @@ export default function ImageUploader({
             Fotos adicionadas
           </h3>
 
-          <span className="text-sm text-gray-500">{images.length}/20</span>
+          <span className="text-sm text-gray-500">{allImages.length}/20</span>
         </div>
 
-        {images.length === 0 ? (
+        {allImages.length === 0 ? (
           <div className="border border-gray-200 rounded-2xl bg-white py-16 px-6 flex flex-col items-center justify-center text-center">
             <div className="text-5xl mb-5 opacity-60">🖼️</div>
 
@@ -138,7 +161,7 @@ export default function ImageUploader({
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {images.map((image, index) => (
+            {allImages.map((image, index) => (
               <div
                 key={index}
                 className="relative aspect-square overflow-hidden rounded-xl border border-gray-200 bg-gray-100"
@@ -164,8 +187,13 @@ export default function ImageUploader({
                     Definir capa
                   </button>
                 )}
+
                 <Image
-                  src={URL.createObjectURL(image)}
+                  src={
+                    image instanceof File
+                      ? URL.createObjectURL(image)
+                      : image.image_url
+                  }
                   alt={image.name}
                   className="w-full h-full object-cover"
                   fill

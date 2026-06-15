@@ -10,12 +10,14 @@ import FeatureSelector from "@/components/FeatureSelector"
 import ImageUploader from "@/components/ImageUploader"
 import { supabase } from "@/lib/supabase"
 import { Property } from "@/types/property"
+import { PropertyImage } from "@/types/property-image"
 
 type FormData = z.infer<typeof propertySchema>
 
 type PropertyFormProps = {
   initialData?: Property
   initialFeatures?: string[]
+  initialImages?: PropertyImage[]
 }
 
 function buildImageRows(propertyId: string, uploadedImages: unknown[]) {
@@ -55,6 +57,7 @@ async function uploadImages(files: File[]) {
 export default function PropertyForm({
   initialData,
   initialFeatures,
+  initialImages,
 }: PropertyFormProps) {
   const isEditing = initialData ? true : false
 
@@ -100,7 +103,11 @@ export default function PropertyForm({
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>(
     initialFeatures ?? [],
   )
-  const [images, setImages] = useState<File[]>([])
+  const [savedImages, setSavedImages] = useState<PropertyImage[]>(
+    initialImages ?? [],
+  )
+  const [deletedImages, setDeletedImages] = useState<PropertyImage[]>([])
+  const [newImages, setNewImages] = useState<File[]>([])
   const [coverIndex, setCoverIndex] = useState(0)
   const [imageError, setImageError] = useState("")
 
@@ -136,6 +143,29 @@ export default function PropertyForm({
         throw error
       }
 
+      if (deletedImages.length > 0) {
+        const imageIds = deletedImages.map((image) => image.id)
+
+        const { error: deleteImagesError } = await supabase
+          .from("property_images")
+          .delete()
+          .in("id", imageIds)
+
+        if (deleteImagesError) {
+          throw deleteImagesError
+        }
+
+        const imagePaths = deletedImages.map((image) => image.image_path)
+
+        const { error: storageDeleteError } = await supabase.storage
+          .from("property-images")
+          .remove(imagePaths)
+
+        if (storageDeleteError) {
+          throw storageDeleteError
+        }
+      }
+
       if (isEditing) {
         const { error: deleteRelationsError } = await supabase
           .from("property_feature_relations")
@@ -160,8 +190,8 @@ export default function PropertyForm({
         throw relationError
       }
 
-      if (images.length > 0) {
-        const uploadedImages = await uploadImages(images)
+      if (newImages.length > 0) {
+        const uploadedImages = await uploadImages(newImages)
 
         const imageRows = buildImageRows(property.id, uploadedImages)
 
@@ -182,7 +212,7 @@ export default function PropertyForm({
       if (!isEditing) {
         reset()
         setSelectedFeatures([])
-        setImages([])
+        setNewImages([])
         setCoverIndex(0)
       }
       window.scrollTo({ top: 0, behavior: "smooth" })
@@ -473,8 +503,12 @@ export default function PropertyForm({
         />
 
         <ImageUploader
-          images={images}
-          setImages={setImages}
+          savedImages={savedImages}
+          setSavedImages={setSavedImages}
+          deletedImages={deletedImages}
+          setDeletedImages={setDeletedImages}
+          newImages={newImages}
+          setNewImages={setNewImages}
           coverIndex={coverIndex}
           setCoverIndex={setCoverIndex}
           imageError={imageError}
