@@ -16,20 +16,45 @@ export default function DeleteButton({ propertyId }: DeleteButtonProps) {
       return
     }
 
-    const { error } = await supabase
-      .from("properties")
-      .delete()
-      .eq("id", propertyId)
+    try {
+      const { data: images, error: imagesError } = await supabase
+        .from("property_images")
+        .select("image_path")
+        .eq("property_id", propertyId)
 
-    if (error) {
+      if (imagesError) {
+        throw imagesError
+      }
+
+      const imagePaths = images?.map((image) => image.image_path) ?? []
+
+      if (imagePaths.length > 0) {
+        const { error: storageError } = await supabase.storage
+          .from("property-images")
+          .remove(imagePaths)
+
+        if (storageError) {
+          throw storageError
+        }
+      }
+
+      const { error } = await supabase
+        .from("properties")
+        .delete()
+        .eq("id", propertyId)
+
+      if (error) {
+        throw error
+      }
+
+      alert("Imóvel excluído com sucesso!")
+
+      window.location.reload()
+    } catch (error) {
       console.error(error)
+
       alert("Erro ao excluir imóvel.")
-      return
     }
-
-    alert("Imóvel excluído com sucesso!")
-
-    window.location.reload()
   }
 
   return (

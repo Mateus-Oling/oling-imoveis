@@ -25,8 +25,6 @@ export default async function EditPropertyPage({ params }: Props) {
     .select("*")
     .eq("property_id", resolvedParams.id)
 
-  console.log(JSON.stringify(propertyImages, null, 2))
-
   const selectedFeaturesIds =
     propertyFeatures?.map((currentFeature) => currentFeature.feature_id) ?? []
 

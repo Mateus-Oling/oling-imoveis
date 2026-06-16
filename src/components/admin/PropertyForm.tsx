@@ -114,6 +114,7 @@ export default function PropertyForm({
   const [deletedImages, setDeletedImages] = useState<PropertyImage[]>([])
   const [newImages, setNewImages] = useState<File[]>([])
   const [coverIndex, setCoverIndex] = useState(0)
+  const [imageError, setImageError] = useState("")
 
   useEffect(() => {
     if (savedImages.length === 0) return
@@ -124,7 +125,6 @@ export default function PropertyForm({
       setCoverIndex(coverImageIndex)
     }
   }, [savedImages])
-  const [imageError, setImageError] = useState("")
 
   async function onSubmit(data: FormData) {
     try {
@@ -208,16 +208,11 @@ export default function PropertyForm({
       if (newImages.length > 0) {
         const uploadedImages = await uploadImages(newImages)
 
-        console.log("COVER INDEX", coverIndex)
-        console.log("UPLOADED IMAGES LENGTH", uploadedImages.length)
-
         const imageRows = buildImageRows(
           property.id,
           uploadedImages,
           coverIndex,
         )
-
-        console.log("IMAGE ROWS", JSON.stringify(imageRows, null, 2))
 
         const { error: imageInsertError } = await supabase
           .from("property_images")
