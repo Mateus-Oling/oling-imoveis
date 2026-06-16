@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { propertySchema } from "@/schemas/propertySchema"
@@ -20,13 +20,18 @@ type PropertyFormProps = {
   initialImages?: PropertyImage[]
 }
 
-function buildImageRows(propertyId: string, uploadedImages: unknown[]) {
+function buildImageRows(
+  propertyId: string,
+  uploadedImages: unknown[],
+  coverIndex: number,
+) {
   return uploadedImages.map((uploadedImage, index) => ({
     property_id: propertyId,
     image_url: uploadedImage.url,
     image_path: uploadedImage.path,
-    is_cover: index === 0,
+    is_cover: index === coverIndex,
   }))
+  console.log("IMAGE ROWS", JSON.stringify(imageRows, null, 2))
 }
 
 async function uploadImages(files: File[]) {
@@ -109,6 +114,16 @@ export default function PropertyForm({
   const [deletedImages, setDeletedImages] = useState<PropertyImage[]>([])
   const [newImages, setNewImages] = useState<File[]>([])
   const [coverIndex, setCoverIndex] = useState(0)
+
+  useEffect(() => {
+    if (savedImages.length === 0) return
+
+    const coverImageIndex = savedImages.findIndex((image) => image.is_cover)
+
+    if (coverImageIndex >= 0) {
+      setCoverIndex(coverImageIndex)
+    }
+  }, [savedImages])
   const [imageError, setImageError] = useState("")
 
   async function onSubmit(data: FormData) {
@@ -193,7 +208,16 @@ export default function PropertyForm({
       if (newImages.length > 0) {
         const uploadedImages = await uploadImages(newImages)
 
-        const imageRows = buildImageRows(property.id, uploadedImages)
+        console.log("COVER INDEX", coverIndex)
+        console.log("UPLOADED IMAGES LENGTH", uploadedImages.length)
+
+        const imageRows = buildImageRows(
+          property.id,
+          uploadedImages,
+          coverIndex,
+        )
+
+        console.log("IMAGE ROWS", JSON.stringify(imageRows, null, 2))
 
         const { error: imageInsertError } = await supabase
           .from("property_images")
@@ -201,6 +225,33 @@ export default function PropertyForm({
 
         if (imageInsertError) {
           throw imageInsertError
+        }
+      }
+
+      const { data: updatedImages, error: updatedImagesError } = await supabase
+        .from("property_images")
+        .select("id")
+        .eq("property_id", property.id)
+
+      if (updatedImagesError) {
+        throw updatedImagesError
+      }
+
+      await supabase
+        .from("property_images")
+        .update({ is_cover: false })
+        .eq("property_id", property.id)
+
+      const coverImage = updatedImages[coverIndex]
+
+      if (coverImage) {
+        const { error: coverUpdateError } = await supabase
+          .from("property_images")
+          .update({ is_cover: true })
+          .eq("id", coverImage.id)
+
+        if (coverUpdateError) {
+          throw coverUpdateError
         }
       }
 
