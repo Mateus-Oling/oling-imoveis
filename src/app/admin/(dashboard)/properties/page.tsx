@@ -1,6 +1,6 @@
 import PropertyCard from "@/components/admin/PropertyCard"
 import Link from "next/link"
-import { supabase } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
 
 export default async function Admin() {
   const { data: propertiesFromDatabase, error } = await supabase

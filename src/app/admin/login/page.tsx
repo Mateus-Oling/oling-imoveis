@@ -4,7 +4,7 @@ import React from "react"
 import Image from "next/image"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -20,23 +20,21 @@ export default function LoginPage() {
     setError("")
     setLoading(true)
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
-
-    console.log({
-      email,
-      password,
-    })
+    console.log("DATA", data)
+    console.log("ERROR", error)
 
     if (error) {
-      setError("E-mail ou senha inválidos.")
+      setError("E-mail ou senha inválidos")
       setLoading(false)
       return
     }
 
     router.push("/admin/properties")
+    console.log("REDIRECT")
   }
 
   return (
