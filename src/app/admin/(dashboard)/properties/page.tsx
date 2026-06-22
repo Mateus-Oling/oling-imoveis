@@ -2,10 +2,24 @@ import PropertyCard from "@/components/admin/PropertyCard"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase/client"
 
-export default async function Admin() {
-  const { data: propertiesFromDatabase, error } = await supabase
-    .from("properties")
-    .select("*")
+export default async function PropertiesPage() {
+  const { data: propertiesFromDatabase, error } = await supabase.from(
+    "properties",
+  ).select(`
+      *,
+      property_images (
+        image_url,
+        is_cover
+      )
+    `)
+  console.log(propertiesFromDatabase)
+
+  const properties =
+    propertiesFromDatabase?.map((property) => ({
+      ...property,
+      image_url: property.property_images?.find((image) => image.is_cover)
+        ?.image_url,
+    })) ?? []
 
   return (
     <div className="mx-auto w-full max-w-1200px xl:max-w-1400px 2xl:max-w-1600px ">
@@ -29,7 +43,7 @@ export default async function Admin() {
       </header>
 
       <section aria-label="Lista de imóveis">
-        {propertiesFromDatabase?.map((currentPropertyFromDatabase) => (
+        {properties?.map((currentPropertyFromDatabase) => (
           <PropertyCard
             key={currentPropertyFromDatabase.id}
             property={currentPropertyFromDatabase}

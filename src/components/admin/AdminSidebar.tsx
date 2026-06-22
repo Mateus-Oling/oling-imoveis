@@ -3,7 +3,7 @@ import LogoutButton from "./LogoutButton"
 
 export default function AdminSidebar() {
   return (
-    <aside className="flex flex-col items-center w-64 xl:w-[320px] 2xl:w-[520px]  bg-gradient-to-b from-green-400 to-green-500 text-white p-6">
+    <aside className="sticky top-0 flex h-screen flex-col items-center w-64 xl:w-[320px] 2xl:w-[520px] bg-gradient-to-b from-green-400 to-green-500 text-white p-6">
       <div className="w-full">
         <h1 className="text-center text-3xl xl:text-4xl 2xl:text-5xl font-bold mt-10">
           Guido Imóveis

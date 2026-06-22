@@ -21,13 +21,13 @@ export default function PropertyCard({
             alt={propertyData.title}
             width={400}
             height={260}
-            className="h-20 w-36 rounded-3xl object-cover lg:h-32 lg:w-56 xl:h-40 xl:w-72  2xl:h-50 2xl:w-360px"
+            className="h-20 w-36 rounded-3xl object-cover lg:h-32 lg:w-56 xl:h-40 xl:w-72 2xl:h-50 2xl:w-360px"
           />
         ) : (
           <div className="h-20 w-36 rounded-3xl bg-gray-200 lg:h-32 lg:w-56 xl:h-42 xl:w-72 2xl:h-52 2xl:w-440px" />
         )}
 
-        <div className="flex min-h-96px flex-col justify-between lg:min-h-128px xl:min-h-160px 2xl:min-h-200px ">
+        <div className="flex min-h-96px flex-col justify-between lg:min-h-128px xl:min-h-160px 2xl:min-h-200px gap-4 xl:gap-6 2xl:gap-8">
           <div className="flex items-center gap-3 lg:gap-4 xl:gap-5">
             <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800 lg:px-4 lg:py-1.5 lg:text-sm xl:px-5 xl:py-2 xl:text-base">
               {propertyData.type}
