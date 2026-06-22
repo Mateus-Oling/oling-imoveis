@@ -24,8 +24,6 @@ export default function LoginPage() {
       email,
       password,
     })
-    console.log("DATA", data)
-    console.log("ERROR", error)
 
     if (error) {
       setError("E-mail ou senha inválidos")
@@ -34,27 +32,26 @@ export default function LoginPage() {
     }
 
     router.push("/admin/properties")
-    console.log("REDIRECT")
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F5F7] flex flex-col items-center pt-20 lg:pt-24 xl:pt-32">
+    <main className="min-h-screen bg-[#F5F5F7] flex flex-col items-center lg:pt-12 xl:pt-14">
       <Image
         src="/assets/logo-guido-imoveis.png"
         alt="Guido Imóveis"
         width={500}
-        height={260}
+        height={220}
         priority
-        className="w-64 lg:w-140 xl:w-[520px] 2xl:w-[680px]"
+        className="w-64 lg:w-140 xl:w-[500px] 2xl:w-[660px]"
       />
 
-      <h1 className="mt-5 text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-[#4a5855]">
+      <h1 className="text-xl lg:text-2xl xl:text-3xl  font-semibold text-[#4a5855]">
         Área de login administrativo
       </h1>
 
       <form
         onSubmit={handleLogin}
-        className="mt-20 lg:mt-24 xl:mt-32 2xl:mt-32 w-full max-w-[420px] lg:max-w-[500px] xl:max-w-[650px] 2xl:max-w-[800px] rounded-3xl bg-white p-12 shadow-sm"
+        className="mt-16 lg:mt-20 xl:mt-28 2xl:mt-28 w-full max-w-[420px] lg:max-w-[500px] xl:max-w-[650px] 2xl:max-w-[800px] rounded-3xl bg-white p-12 shadow-sm"
       >
         <h2 className="mb-8 text-base lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-[#4B5A57]">
           Acesse sua conta
