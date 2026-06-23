@@ -1,5 +1,5 @@
 import PropertyForm from "@/components/admin/PropertyForm"
-import { supabase } from "@/lib/supabase"
+import { createClient } from "@/lib/supabase/server"
 
 type Props = {
   params: {
@@ -9,6 +9,7 @@ type Props = {
 
 export default async function EditPropertyPage({ params }: Props) {
   const resolvedParams = await params
+  const supabase = await createClient()
   const { data: propertyBeingEdited } = await supabase
     .from("properties")
     .select("*")

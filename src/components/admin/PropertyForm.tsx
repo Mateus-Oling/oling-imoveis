@@ -8,7 +8,7 @@ import { z } from "zod"
 import FormField from "@/components/form/FormField"
 import FeatureSelector from "@/components/FeatureSelector"
 import ImageUploader from "@/components/ImageUploader"
-import { supabase } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
 import { Property } from "@/types/property"
 import { PropertyImage } from "@/types/property-image"
 
@@ -31,13 +31,17 @@ function buildImageRows(
     image_path: uploadedImage.path,
     is_cover: index === coverIndex,
   }))
-  console.log("IMAGE ROWS", JSON.stringify(imageRows, null, 2))
 }
 
 async function uploadImages(files: File[]) {
   return await Promise.all(
     files.map(async (file) => {
-      const fileName = `${Date.now()}-${file.name}`
+      const sanitizedFileName = file.name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9.-]/g, "-")
+
+      const fileName = `${Date.now()}-${sanitizedFileName}`
 
       const { data: imageData, error: imageError } = await supabase.storage
         .from("property-images")

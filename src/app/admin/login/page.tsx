@@ -17,21 +17,27 @@ export default function LoginPage() {
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    setError("")
-    setLoading(true)
+    try {
+      setError("")
+      setLoading(true)
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
 
-    if (error) {
-      setError("E-mail ou senha inválidos")
+      if (error) {
+        setError("E-mail ou senha inválidos")
+        return
+      }
+
+      router.push("/admin/properties")
+    } catch (error) {
+      console.error(error)
+      setError("Ocorreu um erro inesperado. Tente novamente.")
+    } finally {
       setLoading(false)
-      return
     }
-
-    router.push("/admin/properties")
   }
 
   return (

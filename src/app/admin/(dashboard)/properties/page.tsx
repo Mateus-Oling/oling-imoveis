@@ -12,7 +12,6 @@ export default async function PropertiesPage() {
         is_cover
       )
     `)
-  console.log(propertiesFromDatabase)
 
   const properties =
     propertiesFromDatabase?.map((property) => ({

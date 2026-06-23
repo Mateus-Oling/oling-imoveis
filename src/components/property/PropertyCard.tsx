@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 
 type PropertyCardProps = {
@@ -27,7 +28,13 @@ export default function PropertyCard({
 }: PropertyCardProps) {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition ">
-      <img src={image} alt="Imóvel" />
+      <Image
+        src={image}
+        alt="Imóvel"
+        width={400}
+        height={300}
+        className="h-56 w-full object-cover"
+      />
 
       <div className="p-4">
         <p className="text-sm text-gray-500">{type}</p>
