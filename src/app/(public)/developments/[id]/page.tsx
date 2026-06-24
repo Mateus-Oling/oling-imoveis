@@ -1,5 +1,6 @@
 import { developments } from "@/data/developments"
 import Image from "next/image"
+import { notFound } from "next/navigation"
 
 export default async function PropertyDetailsPage({
   params,
@@ -8,6 +9,10 @@ export default async function PropertyDetailsPage({
 }) {
   const { id } = await params
   const development = developments.find((item) => item.id === Number(id))
+
+  if (!development) {
+    notFound()
+  }
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 relative space-y-10">
