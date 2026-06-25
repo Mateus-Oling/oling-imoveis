@@ -72,11 +72,8 @@ export default async function PropertyDetailsPage({ params }: Props) {
 
     const categoryTitles = {
       imovel: isHouse ? "Características da casa" : "Características do imóvel",
-
       area_externa: "Área externa",
-
       condominio: "Características do condomínio",
-
       acabamento: "Acabamentos",
     }
 
@@ -88,9 +85,9 @@ export default async function PropertyDetailsPage({ params }: Props) {
     }).format(property.price)
 
     return (
-      <main className="max-w-7xl mx-auto relative px-4 py-10 space-y-10">
-        <section className="grid grid-cols-4 gap-4">
-          <div className="col-span-3 relative h-[390px] rounded-xl overflow-hidden">
+      <main className="mx-auto w-full max-w-[1850px] px-8 py-10 xl:px-10 2xl:px-12">
+        <section className="grid grid-cols-4 gap-6 xl:gap-8">
+          <div className="relative col-span-3 h-[560px] overflow-hidden rounded-2xl">
             <Image
               src={coverImage}
               alt={property.title}
@@ -99,11 +96,11 @@ export default async function PropertyDetailsPage({ params }: Props) {
             />
           </div>
 
-          <div className="flex flex-col gap-4 ">
+          <div className="flex h-[560px] flex-col gap-4">
             {galleryImages.slice(0, 3).map((image) => (
               <div
                 key={image.image_url}
-                className="relative h-[120px] rounded-lg overflow-hidden"
+                className="relative flex-1 overflow-hidden rounded-xl"
               >
                 <Image
                   src={image.image_url}
@@ -116,81 +113,91 @@ export default async function PropertyDetailsPage({ params }: Props) {
           </div>
         </section>
 
-        <section className="mt-6 max-w-4xl space-y-6">
+        <div className="mt-12 grid grid-cols-[minmax(0,1fr)_380px] gap-14">
           <div>
-            <h1 className="text-3xl font-semibold">
-              {property.type} em {property.neighborhood}
-            </h1>
+            <section className="space-y-8">
+              <div>
+                <h1 className="text-4xl font-semibold">{property.title}</h1>
 
-            <p className="text-gray-500 mt-1">{property.address}</p>
-          </div>
-
-          <div className="flex items-center gap-8">
-            <span className="bg-green-700 text-white px-5 py-2 rounded-md font-semibold">
-              {formattedPrice}
-            </span>
-
-            <span>{property.area_total} m²</span>
-            <span>{property.bedrooms} quartos</span>
-            <span>{property.bathrooms} banheiros</span>
-            <span>{garageSpaces} vagas</span>
-          </div>
-        </section>
-
-        <div className="absolute top-[500px] right-4 w-[320px] bg-white shadow-md rounded-xl p-6 space-y-4">
-          <h3 className="text-lg font-semibold">Entrar em contato</h3>
-
-          <input
-            className="w-full border rounded-md px-3 py-2"
-            placeholder="Nome"
-          />
-
-          <input
-            className="w-full border rounded-md px-3 py-2"
-            placeholder="E-mail"
-          />
-
-          <textarea
-            className="w-full border rounded-md px-3 py-2 h-24"
-            placeholder="Mensagem"
-          />
-
-          <button className="w-full bg-green-700 text-white py-2 rounded-md">
-            Enviar
-          </button>
-        </div>
-
-        <section className="max-w-4xl mt-10">
-          <h2 className="text-2xl font-semibold mb-3">Descrição</h2>
-
-          <p className="text-gray-600 leading-relaxed">
-            {property.description}
-          </p>
-        </section>
-
-        <section className="max-w-4xl mt-12">
-          {visibleCategories.map((category) => {
-            const categoryFeatures = groupedFeatures[category]
-
-            if (!categoryFeatures?.length) {
-              return null
-            }
-
-            return (
-              <div key={category} className="mb-14">
-                <h2 className="text-2xl font-semibold mb-4">
-                  {categoryTitles[category]}
-                </h2>
-
-                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-2">
-                  {categoryFeatures.map((feature) => (
-                    <li key={feature.id}>✔ {feature.name}</li>
-                  ))}
-                </ul>
+                <p className="mt-2 text-lg text-gray-500">{property.address}</p>
               </div>
-            )
-          })}
-        </section>
+
+              <div className="flex flex-wrap items-center gap-8 text-lg">
+                <span className="rounded-md bg-green-700 px-5 py-2 font-semibold text-white">
+                  {formattedPrice}
+                </span>
+
+                {property.type?.toLowerCase() !== "terreno" && (
+                  <>
+                    <span>{property.area_total} m²</span>
+                    <span>{property.bedrooms} quartos</span>
+                    <span>{property.bathrooms} banheiros</span>
+                    <span>{garageSpaces} vagas</span>
+                  </>
+                )}
+              </div>
+            </section>
+
+            <section className="mt-14">
+              <h2 className="mb-4 text-2xl font-semibold">Descrição</h2>
+
+              <p className="leading-relaxed text-gray-600">
+                {property.description}
+              </p>
+            </section>
+
+            <section className="mt-14">
+              {visibleCategories.map((category) => {
+                const categoryFeatures = groupedFeatures[category]
+
+                if (!categoryFeatures?.length) {
+                  return null
+                }
+
+                return (
+                  <div key={category} className="mb-14">
+                    <h2 className="mb-5 text-2xl font-semibold">
+                      {categoryTitles[category]}
+                    </h2>
+
+                    <ul className="grid grid-cols-1 gap-x-4 gap-y-3 md:grid-cols-2 lg:grid-cols-3">
+                      {categoryFeatures.map((feature) => (
+                        <li key={feature.id}>✔ {feature.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              })}
+            </section>
+          </div>
+
+          <aside className="sticky top-8 h-fit">
+            <div className="rounded-2xl bg-white p-8 shadow-md">
+              <h3 className="mb-6 text-xl font-semibold">Entrar em contato</h3>
+
+              <div className="space-y-4">
+                <input
+                  className="w-full rounded-lg border px-4 py-3"
+                  placeholder="Nome"
+                />
+
+                <input
+                  className="w-full rounded-lg border px-4 py-3"
+                  placeholder="E-mail"
+                />
+
+                <textarea
+                  className="h-32 w-full rounded-lg border px-4 py-3"
+                  placeholder="Mensagem"
+                />
+
+                <button className="w-full rounded-lg bg-green-700 py-3 font-medium text-white">
+                  Enviar
+                </button>
+              </div>
+            </div>
+          </aside>
+        </div>
       </main>
     )
   } catch (error) {
