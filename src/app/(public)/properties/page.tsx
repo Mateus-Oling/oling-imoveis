@@ -1,4 +1,5 @@
 import PropertyCard from "@/components/property/PropertyCard"
+import mapPropertyToCard from "@/lib/propertyMapper"
 import { createClient } from "@/lib/supabase/server"
 
 export default async function PropertiesPage() {
@@ -20,24 +21,7 @@ export default async function PropertiesPage() {
     }
 
     const properties =
-      propertiesFromDatabase?.map((property) => ({
-        id: property.id,
-        image:
-          property.property_images?.find((image) => image.is_cover)
-            ?.image_url ?? "",
-        type: property.type,
-        neighborhood: property.neighborhood,
-        address: property.address,
-        area: property.area_total,
-        bedrooms: property.bedrooms,
-        bathrooms: property.bathrooms,
-        garageSpaces: property.garage_covered + property.garage_uncovered,
-
-        price: new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(property.price),
-      })) ?? []
+      propertiesFromDatabase?.map((property) => ({ mapPropertyToCard })) ?? []
 
     return (
       <main>

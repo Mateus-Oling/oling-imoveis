@@ -3,6 +3,7 @@ import PropertyCard from "@/components/property/PropertyCard"
 import FeaturedDevelopments from "@/components/home/FeaturedDevelopments"
 import Link from "next/link"
 import Image from "next/image"
+import mapPropertyToCard from "@/lib/propertyMapper"
 
 export default async function Home() {
   const supabase = await createClient()
@@ -20,24 +21,7 @@ export default async function Home() {
     )
     .limit(6)
 
-  const properties =
-    propertiesFromDatabase?.map((property) => ({
-      id: property.id,
-      image:
-        property.property_images.find((image) => image.is_cover)?.image_url ??
-        "",
-      type: property.type,
-      neighborhood: property.neighborhood,
-      address: property.address,
-      area: property.area_total,
-      bedrooms: property.bedrooms,
-      bathrooms: property.bathrooms,
-      garageSpaces: property.garage_covered + property.garage_uncovered,
-      price: new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(property.price),
-    })) ?? []
+  const properties = propertiesFromDatabase?.map(mapPropertyToCard) ?? []
 
   return (
     <main className="bg-gray-50">
@@ -91,7 +75,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <FeaturedDevelopments />
+      {/* <FeaturedDevelopments /> */}
     </main>
   )
 }
