@@ -37,8 +37,6 @@ export default function PropertyCard({
       />
 
       <div className="p-4">
-        <p className="text-sm text-gray-500">{type}</p>
-
         <h2 className="text-lg font-semibold">{neighborhood}</h2>
 
         <p className="text-sm text-gray-500 mb-3">{address}</p>
